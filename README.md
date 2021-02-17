@@ -5,7 +5,10 @@
 
 To keep track and manage the completion of events. Sometimes calendars get exported as events and there is no way to tell if an event (I.E. homework) was completed or not 
 
-## Instructions
+## Pre-reqs
+* Latest release of Python 3
+
+## Setup
 
 * Download this repository and save all the files into a folder
 
