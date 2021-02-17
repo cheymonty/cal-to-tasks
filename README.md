@@ -1,6 +1,12 @@
 # Google Calendar Events to Google Tasks
 *This project moves the calendar events into the default task list*
 
+## Use Cases
+
+To keep track and manage the completion of events. Sometimes calendars get exported as events and there is no way to tell if an event (I.E. homework) was completed or not 
+
+## Instructions
+
 * Download this repository and save all the files into a folder
 
 * Find the Calendar ID of the calendar you want to move to tasks (Settings of the calendar -> Calendar ID)
