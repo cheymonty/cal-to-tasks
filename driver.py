@@ -81,9 +81,9 @@ def cal_to_tasks(events):
     prev_copied = []
     copied_over = ""
     count = 0
-
-    with open('prev_copied.txt') as file:
-        prev_copied = [line.strip() for line in file]
+    if os.path.exists('prev_copied'):
+        with open('prev_copied.txt') as file:
+            prev_copied = [line.strip() for line in file]
 
     # take data from prev_copied and see if any of the events is in
     # the list, if it is, skip over it. store id's in the text file
