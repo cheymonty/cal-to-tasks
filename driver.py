@@ -77,16 +77,29 @@ def cal_to_tasks(events):
     results = service.tasklists().list(maxResults=10).execute()
     task_lists = results.get('items', [])
 
-    for event in events: 
+    
+    prev_copied = []
+    copied_over = ""
+    count = 0
+
+    with open('prev_copied.txt') as file:
+        prev_copied = [line.strip() for line in file]
+
+    # take data from prev_copied and see if any of the events is in
+    # the list, if it is, skip over it. store id's in the text file
+    for event in events:
+        if event['id'] in prev_copied:
+            continue
+
         title = event['summary']
         description = ""
         if "description" in event:
             description = event['description']
-    
+
         due = event['start'].get('dateTime')
         if due == None:
-            due = event['start'].get('date') + "T09:00:00-05:00"
-      
+            due = event['start']['date'] + "T09:00:00-05:00"
+        
         request_body = {
             'title': title,
             'notes': description,
@@ -95,12 +108,19 @@ def cal_to_tasks(events):
             'status': 'needsAction'
         }
 
-        r = service.tasks().insert(
+        service.tasks().insert(
             tasklist=task_lists[0]['id'],
             body=request_body
         ).execute()
 
-    print("Created " + str(len(events)) + " new tasks")
+        copied_over += event['id'] + "\n"
+        count += 1
 
+    with open("prev_copied.txt", "a") as file:
+        file.write(copied_over)
+
+    print("Created " + str(count) + " new tasks")
+
+        
 if __name__ == '__main__':
     main()
