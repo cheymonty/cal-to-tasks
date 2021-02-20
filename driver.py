@@ -33,7 +33,7 @@ def main():
 
     
     now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
-    print('Gets all future events from this calendar')
+    print('Getting all future events from this calendar...')
     events_result = service.events().list(calendarId=calendar_id, timeMin=now,
                                         singleEvents=True,
                                         orderBy='startTime').execute()
@@ -81,6 +81,10 @@ def cal_to_tasks(events):
             print(str(i) + ": " + task_list['title'])
 
         task_list_index = int(input("Enter the number next to the tasklist you'd like to copy your events to: "))
+
+        # input error checking
+        while (task_list_index >= len(task_lists) or task_list_index < 0):
+            task_list_index = int(input("Enter the number next to the tasklist you'd like to copy your events to: "))
 
     prev_copied = []
     copied_over = ""
