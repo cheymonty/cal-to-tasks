@@ -6,7 +6,7 @@ from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 
-SCOPES = ['https://www.googleapis.com/auth/calendar', 'https://www.googleapis.com/auth/tasks']
+SCOPES = ['https://www.googleapis.com/auth/calendar.readonly', 'https://www.googleapis.com/auth/tasks']
 
 
 def main():
@@ -40,8 +40,6 @@ def main():
     events = events_result.get('items', [])
 
     # prints out calendar events
-    if not events:
-        print('No upcoming events found.')
     for event in events:
         start = event['start'].get('dateTime', event['start'].get('date'))
         print(start, event['summary'])
@@ -77,11 +75,17 @@ def cal_to_tasks(events):
     results = service.tasklists().list(maxResults=10).execute()
     task_lists = results.get('items', [])
 
-    
+    task_list_index = 0
+    if (len(task_lists) > 1):
+        for i, task_list in enumerate(task_lists):
+            print(str(i) + ": " + task_list['title'])
+
+        task_list_index = int(input("Enter the number next to the tasklist you'd like to copy your events to: "))
+
     prev_copied = []
     copied_over = ""
     count = 0
-    if os.path.exists('prev_copied'):
+    if os.path.exists('prev_copied.txt'):
         with open('prev_copied.txt') as file:
             prev_copied = [line.strip() for line in file]
 
@@ -109,7 +113,7 @@ def cal_to_tasks(events):
         }
 
         service.tasks().insert(
-            tasklist=task_lists[0]['id'],
+            tasklist=task_lists[task_list_index]['id'],
             body=request_body
         ).execute()
 

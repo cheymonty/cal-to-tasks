@@ -1,5 +1,5 @@
 # Google Calendar Events to Google Tasks
-*This project moves the calendar events into the default task list*
+*This project moves calendar events into a specified task list*
 
 ## Use Cases
 
